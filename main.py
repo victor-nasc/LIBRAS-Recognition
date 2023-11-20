@@ -111,6 +111,7 @@ def main(model):
         # Put the text and label on the window
         ch = label if label != ' ' else '_'
         cv2.putText(frame, 'Press \'Q\' to exit', (10,30), font, 1, (0, 255, 0), 2)
+        cv2.putText(frame, 'Press \'C\' to clear', (10,65), font, 1, (0, 255, 0), 2)
         cv2.putText(frame, ch, (x+w//2-22 , y-2*text_size[1]), font, 3, (0, 255, 0), 5)
         cv2.putText(frame, text, (10, text_y), font, 2, (255, 255, 255), 2)
 
@@ -120,6 +121,8 @@ def main(model):
         key = cv2.waitKey(1)
         if key == ord('q'):
             break
+        elif key == ord('c'):
+            text = ''
 
 
     # release webcam
