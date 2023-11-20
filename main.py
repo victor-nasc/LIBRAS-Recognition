@@ -1,15 +1,17 @@
+# install scikit-learn ==1.0.2
 import cv2
 import numpy as np
 from cvzone.HandTrackingModule import HandDetector
 from keras.models import load_model
-
+import joblib
 labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'N',
              'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y']
 
 cap = cv2.VideoCapture(0)
 detector = HandDetector(maxHands=1, detectionCon=0.3)
 
-model = load_model('nn_weights.h5')
+# model = load_model('nn_weights.h5')
+model = joblib.load("./models/knn_model.joblib")
 
 c = ''
 while True:
@@ -17,7 +19,7 @@ while True:
     ret, frame = cap.read()
     
     # detect hands
-    hands, img = detector.findHands(frame,flipType=True)
+    hands, img = detector.findHands(frame, flipType=True)
     
     # if hands are detected
     points = []
@@ -44,7 +46,7 @@ while True:
         # in all poins are detected
         if(np.shape(points)[1] == 63):
             # predict
-            predictions = model.predict(np.asarray(points), verbose=0)
+            predictions = model.predict(np.asarray(points))
             
             # assign class
             predicted_class = labels[np.argmax(predictions)]
