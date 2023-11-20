@@ -4,18 +4,22 @@ import pandas as pd
 from cvzone.HandTrackingModule import HandDetector
 
 
+# save images?
+save = False
+
 # create directory
 DATA_DIR = './images'
-if not os.path.exists(DATA_DIR):
+if not os.path.exists(DATA_DIR) and save:
     os.makedirs(DATA_DIR)
 
 # define dataset parameters
-size = 512
-labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'N',
-               'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y']
+size = 2048
+# labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'N',
+#                'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y']
+labels = ['Y']
 
 # initialize hand detector
-detector = HandDetector(maxHands=1, detectionCon=0.3)
+detector = HandDetector(maxHands=1, detectionCon=0.5)
 
 # initialize dataframe
 columns = ['label']
@@ -30,7 +34,7 @@ cap = cv2.VideoCapture(0)
 # for each letter
 for c in labels:
     # create directory
-    if not os.path.exists(os.path.join(DATA_DIR, str(c))):
+    if not os.path.exists(os.path.join(DATA_DIR, str(c))) and save:
         os.makedirs(os.path.join(DATA_DIR, str(c)))
     
     # wait for user 
@@ -82,8 +86,9 @@ for c in labels:
             df.loc[len(df)] = row
             
             # save image 
-            name = str(c)+'_'+str(j)+'.jpg'
-            cv2.imwrite(os.path.join(DATA_DIR, str(c), name), frame)
+            if save:
+                name = str(c)+'_'+str(j)+'.jpg'
+                cv2.imwrite(os.path.join(DATA_DIR, str(c), name), frame)
             j += 1
 
         # flip hands
@@ -98,7 +103,7 @@ for c in labels:
                 if cv2.waitKey(1) & 0xFF == ord('n'):
                     break
 
-        cv2.waitKey(25)
+        cv2.waitKey(1)
         
     print('Captured {} images for {}'.format(size, c))      
       

@@ -1,16 +1,15 @@
 import cv2
 import numpy as np
-import joblib
 from cvzone.HandTrackingModule import HandDetector
 from keras.models import load_model
 
-labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'N', 'O', 'P',
-       'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y']
-eps = 25
+labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'N',
+             'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y']
+
 cap = cv2.VideoCapture(0)
 detector = HandDetector(maxHands=1, detectionCon=0.3)
 
-model = load_model('your_model.h5')
+model = load_model('nn_weights.h5')
 
 c = ''
 while True:
