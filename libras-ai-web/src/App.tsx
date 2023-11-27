@@ -1,12 +1,95 @@
-import { Github, Circle, FileVideo, Upload as UploadIcon } from "lucide-react";
+import axios from "axios";
+import { Github, Circle, Upload as UploadIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "./components/ui/separator";
 import { Upload } from "antd";
 import { Textarea } from "./components/ui/textarea";
 import { Label } from "./components/ui/label";
 import VLibras from "@djpfs/react-vlibras";
+import { useState, useRef, useEffect } from "react";
 
 export function App() {
+  const [isShowingWebcam, setIsShowingWebcam] = useState<boolean>(false);
+  const [currentText, setCurrentText] = useState<string>("");
+  const [currentSnapshot, setCurrentSnapshot] = useState<string>("");
+  const webcamRef = useRef<HTMLVideoElement>(null);
+
+  const getVideo = () => {
+    navigator.mediaDevices
+      .getUserMedia({
+        video: { width: 1920, height: 1080 },
+        audio: false,
+      })
+      .then((stream) => {
+        const video = document.querySelector("video");
+        if (video) {
+          video.srcObject = stream;
+          video.play();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const stopVideo = () => {
+    const video = document.querySelector("video");
+    if (video) {
+      video.srcObject = null;
+      setCurrentText("");
+    }
+  };
+
+  const sendDataToFlask = async (data: string): Promise<void> => {
+    try {
+      console.log("Sending data to Flask...");
+      const response = await axios.post("http://localhost:5000/receive_data", {
+        data: data,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error sending data to Flask:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isShowingWebcam) {
+      getVideo();
+      if (currentSnapshot) {
+        sendDataToFlask(currentSnapshot);
+      }
+    } else {
+      stopVideo();
+    }
+  }, [isShowingWebcam, currentSnapshot]);
+
+  // Atualizar a imagem atual a cada frame da webcam
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (webcamRef.current) {
+        const canvas = document.createElement("canvas");
+        canvas.width = webcamRef.current.videoWidth;
+        canvas.height = webcamRef.current.videoHeight;
+
+        const context = canvas.getContext("2d");
+        if (context) {
+          context.drawImage(
+            webcamRef.current,
+            0,
+            0,
+            webcamRef.current.videoWidth,
+            webcamRef.current.videoHeight
+          );
+
+          const data = canvas.toDataURL();
+          setCurrentSnapshot(data);
+        }
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [webcamRef]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <VLibras forceOnload={true} />
@@ -16,7 +99,7 @@ export function App() {
 
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground">
-            Desenvolvido com 💜 no 🇧🇷
+            Desenvolvido com 💜 no Brasil 🇧🇷
           </span>
 
           <Separator orientation="vertical" className="h-6" />
@@ -33,22 +116,24 @@ export function App() {
           <div className="grid grid-rows-2 gap-4 flex-1">
             <Textarea
               className="resize-none p-4 leading-relaxed"
-              placeholder="Introduza o texto para gerar o vídeo em Libras"
+              defaultValue="Bem-vindo ao libras.ai! Aqui você pode usar a sua webcam ou enviar uma imagem para que o nosso sistema faça a transcrição de Libras para texto. Aproveite para conferir também mais conteúdos voltados ao aprendizado de libras nos seguintes sites:"
+              readOnly
             />
 
-            {/* TODO: Contênier com interação de imagem do usuário */}
+            {/* TODO: Criar aqui scrollable horizontal com conteúdos em Libras */}
+
             <div className="flex items-center justify-between gap-2">
-              <div className="bg-slate-600 flex-1">
-                <Upload>
-                  <Button variant="outline" className="border-dashed">
-                    <UploadIcon />
-                    Faça o Upload de imagens
-                  </Button>
+              <div className="flex-1 flex h-full justify-center items-center">
+                <Upload className="border flex flex-1 rounded-md aspect-video cursor-pointer border-dashed text-md gap-2 items-center justify-center text-muted-foreground">
+                  <UploadIcon className="inline mr-2" />
+                  <p className="text-xl inline">Faça o upload de imagens</p>
                 </Upload>
               </div>
-              <div className="bg-slate-800 flex-1">
-                Vídeo gerado pela API VLibras com base no texto introduzido na
-                textarea
+              <div className="flex-1 flex h-full justify-center items-center">
+                <video
+                  className="border flex flex-1 rounded-md aspect-video cursor-pointer border-dashed text-sm flex-col gap-2 items-center justify-center text-muted-foreground"
+                  ref={webcamRef}
+                />
               </div>
             </div>
           </div>
@@ -62,47 +147,25 @@ export function App() {
         {/* Side bar */}
         <aside className="w-80 space-y-6">
           {/* TODO: transformar esse formulário de vídeo num contêiner que mostre a webcam em tempo real (aspect-video é importante) */}
-          <form className="space-y-6">
-            <label
-              htmlFor="video"
-              className="border flex rounded-md aspect-video cursor-pointer border-dashed text-sm flex-col gap-2 items-center justify-center text-muted-foreground"
-            >
-              <FileVideo className="w-4 h-4" />
-              Selecione um vídeo para gerar sua transcrição
-            </label>
-
-            <input
-              type="file"
-              id="video"
-              accept="video/mp4"
-              className="sr-only"
-            />
-
-            <Separator />
-
-            <div className="space-y-2">
-              <Label htmlFor="transcription_prompt">Texto transcrito</Label>
-              <Textarea
-                id="transcription_prompt"
-                className="resize-none h-5 leading-relaxed"
-                placeholder="Seu texto gerado aparecerá aqui..."
-                readOnly
-              />
+          <form className="space-y-6 flex flex-col items-center">
+            {/* TODO: Centralizar isso */}
+            <div className="w-1/2 flex justify-between items-center">
+              <Label htmlFor="transcription_prompt">Letra interpretada:</Label>
+              <span className="text-2xl text-green-500">{currentText}</span>
             </div>
 
-            <Button type="submit" className="w-full">
-              Iniciar gravação
+            <Button
+              type="submit"
+              className="w-full"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsShowingWebcam(!isShowingWebcam);
+              }}
+            >
+              {isShowingWebcam ? "Parar gravação" : "Iniciar gravação"}
               <Circle className="w-4 h-4 ml-2" />
             </Button>
           </form>
-
-          {/* <Separator />
-
-          <form className="space-y-6">
-            <div className="space-y-2">
-              <Label>Modelo</Label>
-            </div>
-          </form> */}
         </aside>
       </main>
     </div>
