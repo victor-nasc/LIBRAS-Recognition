@@ -4,10 +4,12 @@ import { Separator } from "./components/ui/separator";
 import { Upload } from "antd";
 import { Textarea } from "./components/ui/textarea";
 import { Label } from "./components/ui/label";
+import VLibras from "@djpfs/react-vlibras";
 
 export function App() {
   return (
     <div className="min-h-screen flex flex-col">
+      <VLibras forceOnload={true} />
       {/* Header */}
       <div className="px-6 py-3 flex items-center justify-between border-b">
         <h1 className="text-xl font-bold">libras.ai</h1>
@@ -52,9 +54,8 @@ export function App() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            Lembre-se: você pode utilizar a variável{" "}
-            <code className="text-green-400">transcription</code> no seu prompt
-            para adicionar o conteúdo da transcrição do vídeo selecionado.
+            Lembre-se: o projeto continua sob desenvolvimento, e no momento
+            permite a transcrição de letras isoladas em Libras.
           </p>
         </div>
 
@@ -83,7 +84,7 @@ export function App() {
               <Label htmlFor="transcription_prompt">Texto transcrito</Label>
               <Textarea
                 id="transcription_prompt"
-                className="resize-none h-20 leading-relaxed"
+                className="resize-none h-5 leading-relaxed"
                 placeholder="Seu texto gerado aparecerá aqui..."
                 readOnly
               />
