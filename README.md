@@ -33,18 +33,22 @@ to classify and transcribe the corresponding sign language alphabet.
 
 ## :hammer: How we built it
 1. Creation of a Libras static alphabet dataset
-   - see [./dataset](./dataset) folder for more information about the data format
-3. Train different models using [scikit-learn](https://scikit-learn.org/stable) and [Keras](https://keras.io/)
-   - see [train.ipynb](train.ipynb) for training results 
-4. Build the real-time transcriber
-   1. open your webcam
-   2. get hand position using [CVZone](https://github.com/cvzone/cvzone) Hand Tracking Module
-   3. normalize and reshape hand landmark coordinates 
-   4. predict using some model
-   5. show results 
+   - Refer to the [./dataset](./dataset) folder for more information about the data format
+2. Train different models using [scikit-learn](https://scikit-learn.org/stable) and [Keras](https://keras.io/)
+   - Check [train.ipynb](train.ipynb) for training results 
+3. Real-time transcriber
+   1. Open your webcam
+   2. Obtain hand positions using the [CVZone](https://github.com/cvzone/cvzone) Hand Tracking Module
+   3. Normalize and reshape hand landmark coordinates 
+   4. Make predictions using a selected model
+   5. Display results in an [OpenCV](https://opencv.org/) window
 
 
 ## :camera: Usage
+- Hold the same sign for 10 frames to write it
+
+- Use this sign :hand: for spacebar
+
 ```bash
 # clone the repository
 git clone https://github.com/victor-nasc/LIBRAS-Recognition.git
@@ -55,3 +59,11 @@ pip install -r requirements.txt
 # Run the program
 python3 main.py
 ```
+
+## Authors
+Victor Nascimento Ribeiro - [LinkedIn](https://www.linkedin.com/in/your-linkedin-profile/)
+
+Gustavo Vaz Pinto - [LinkedIn](https://www.linkedin.com/in/your-linkedin-profile/)
+
+Eduardo Cruz Guedes - [LinkedIn](https://www.linkedin.com/in/your-linkedin-profile/)
+
