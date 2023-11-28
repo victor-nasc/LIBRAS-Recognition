@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, make_response
+import base64
 
 app = Flask(__name__)
 
@@ -16,7 +17,17 @@ def before_request():
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
     data = request.get_json()
-    print("Received data: ", data)
+    data = data['data']
+    # print("Received data: ", data)
+
+    base64_image_data = data.split(",")[1]
+
+    # Convert base64 image to actual image
+    image = base64.b64decode(base64_image_data)
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(image)
+
+    # Export image to actual main.py
 
     return _corsify_actual_response(jsonify({"status": "success", "interpreted_data": 'a'}))
 

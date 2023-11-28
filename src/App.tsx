@@ -41,8 +41,6 @@ export function App() {
   };
 
   const sendDataToFlask = async (data: string): Promise<void> => {
-    console.log(`Sending data to Flask: ${data}`);
-
     await fetch("http://localhost:5000/receive_data", {
       method: "POST",
       body: JSON.stringify({ data: data }),
@@ -53,7 +51,8 @@ export function App() {
     })
       .then((response) => response.json())
       .then(async (data) => {
-        setCurrentText(data["interpreted_data"].toUpperCase());
+        setCurrentText(currentText + data["interpreted_data"].toUpperCase());
+        if (currentText.length > 10) setCurrentText("");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -95,7 +94,7 @@ export function App() {
           setCurrentSnapshot(data);
         }
       }
-    }, 500);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [webcamRef]);
@@ -160,7 +159,9 @@ export function App() {
           <form className="space-y-6 flex flex-col items-center">
             {/* TODO: Centralizar isso */}
             <div className="w-1/2 flex justify-between items-center">
-              <Label htmlFor="transcription_prompt">Letra interpretada:</Label>
+              <Label htmlFor="transcription_prompt">
+                Letras interpretadas:
+              </Label>
               <span className="text-2xl text-green-500">{currentText}</span>
             </div>
 
