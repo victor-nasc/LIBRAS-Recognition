@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Github, Circle, Upload as UploadIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "./components/ui/separator";
@@ -37,19 +36,28 @@ export function App() {
     if (video) {
       video.srcObject = null;
       setCurrentText("");
+      setCurrentSnapshot("");
     }
   };
 
   const sendDataToFlask = async (data: string): Promise<void> => {
-    try {
-      console.log("Sending data to Flask...");
-      const response = await axios.post("http://localhost:5000/receive_data", {
-        data: data,
+    console.log(`Sending data to Flask: ${data}`);
+
+    await fetch("http://localhost:5000/receive_data", {
+      method: "POST",
+      body: JSON.stringify({ data: data }),
+      headers: {
+        "Content-Type": "application/json",
+        "Cors-Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((response) => response.json())
+      .then(async (data) => {
+        setCurrentText(data["interpreted_data"].toUpperCase());
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error sending data to Flask:", error);
-    }
   };
 
   useEffect(() => {
@@ -68,6 +76,8 @@ export function App() {
     const interval = setInterval(() => {
       if (webcamRef.current) {
         const canvas = document.createElement("canvas");
+        // Canvas deve ser sr-only
+        canvas.style.display = "none";
         canvas.width = webcamRef.current.videoWidth;
         canvas.height = webcamRef.current.videoHeight;
 
