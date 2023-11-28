@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, make_response
 import base64
+import os
 
 import cv2
 import numpy as np
@@ -7,6 +8,7 @@ import joblib
 import argparse
 
 from cvzone.HandTrackingModule import HandDetector
+from sklearn.neighbors import KNeighborsClassifier
 
 app = Flask(__name__)
 
@@ -34,7 +36,9 @@ def receive_data():
     final_label = ''
 
     try:
-        with open("./images/sample.png", "wb") as fh:
+        filename = "./images/sample.png"
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, "wb") as fh:
             fh.write(image)
 
         final_label = main()
@@ -67,7 +71,7 @@ def main():
     args = parser.parse_args()
 
     # load model
-    path = './models/' + args.model + '_model'
+    path = './server/models/' + args.model + '_model'
     model = joblib.load(path + '.joblib')
 
     # define labels
