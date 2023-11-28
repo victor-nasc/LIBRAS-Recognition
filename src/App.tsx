@@ -1,4 +1,4 @@
-import { Github, Circle, Upload as UploadIcon } from "lucide-react";
+import { Github, Circle, Upload as UploadIcon, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "./components/ui/separator";
 import { Upload } from "antd";
@@ -6,12 +6,23 @@ import { Textarea } from "./components/ui/textarea";
 import { Label } from "./components/ui/label";
 import VLibras from "@djpfs/react-vlibras";
 import { useState, useRef, useEffect } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./components/ui/select";
+import { Slider } from "./components/ui/slider";
 
 export function App() {
   const [isShowingWebcam, setIsShowingWebcam] = useState<boolean>(false);
   const [currentText, setCurrentText] = useState<string>("");
   const [currentSnapshot, setCurrentSnapshot] = useState<string>("");
   const webcamRef = useRef<HTMLVideoElement>(null);
+  const [timeUntilNextSnapshot, setTimeUntilNextSnapshot] =
+    useState<number>(2.5);
+  const [selectedModel, setSelectedModel] = useState<string>("knn");
 
   const getVideo = () => {
     navigator.mediaDevices
@@ -35,48 +46,46 @@ export function App() {
     const video = document.querySelector("video");
     if (video) {
       video.srcObject = null;
-      setCurrentText("");
       setCurrentSnapshot("");
     }
   };
 
-  const sendDataToFlask = async (data: string): Promise<void> => {
-    await fetch("http://localhost:5000/receive_data", {
-      method: "POST",
-      body: JSON.stringify({ data: data }),
-      headers: {
-        "Content-Type": "application/json",
-        "Cors-Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((response) => response.json())
-      .then(async (data) => {
-        setCurrentText(currentText + data["interpreted_data"].toUpperCase());
-        if (currentText.length > 10) setCurrentText("");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
-
   useEffect(() => {
-    if (isShowingWebcam) {
-      getVideo();
-      if (currentSnapshot) {
-        sendDataToFlask(currentSnapshot);
-      }
-    } else {
-      stopVideo();
+    const sendDataToFlask = async (
+      img: string,
+      model: string
+    ): Promise<void> => {
+      console.log("Sending data to Flask", model);
+      await fetch("http://localhost:5000/receive_data", {
+        method: "POST",
+        body: JSON.stringify({ image: img, model: model }),
+        headers: {
+          "Content-Type": "application/json",
+          "Cors-Access-Control-Allow-Origin": "*",
+        },
+      })
+        .then((response) => response.json())
+        .then(async (data) => {
+          setCurrentText((c) => c + data["interpreted_data"].toUpperCase());
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+
+    if (isShowingWebcam) getVideo();
+    else stopVideo();
+    if (currentSnapshot) {
+      sendDataToFlask(currentSnapshot, selectedModel);
     }
-  }, [isShowingWebcam, currentSnapshot]);
+  }, [isShowingWebcam, currentSnapshot, selectedModel]);
 
   // Atualizar a imagem atual a cada frame da webcam
   useEffect(() => {
+    if (!isShowingWebcam) return;
     const interval = setInterval(() => {
       if (webcamRef.current) {
         const canvas = document.createElement("canvas");
-        // Canvas deve ser sr-only
-        canvas.style.display = "none";
         canvas.width = webcamRef.current.videoWidth;
         canvas.height = webcamRef.current.videoHeight;
 
@@ -94,10 +103,10 @@ export function App() {
           setCurrentSnapshot(data);
         }
       }
-    }, 1000);
+    }, timeUntilNextSnapshot * 1000);
 
     return () => clearInterval(interval);
-  }, [webcamRef]);
+  }, [webcamRef, isShowingWebcam, timeUntilNextSnapshot]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -113,10 +122,15 @@ export function App() {
 
           <Separator orientation="vertical" className="h-6" />
 
-          <Button variant="outline">
-            <Github className="w-4 h-4 mr-2" />
-            GitHub
-          </Button>
+          <a
+            href="https://github.com/victor-nasc/LIBRAS-Recognition"
+            target="_blank"
+          >
+            <Button variant="outline">
+              <Github className="w-4 h-4 mr-2" />
+              GitHub
+            </Button>
+          </a>
         </div>
       </div>
 
@@ -124,8 +138,9 @@ export function App() {
         <div className="flex flex-col flex-1 gap-4">
           <div className="grid grid-rows-2 gap-4 flex-1">
             <Textarea
-              className="resize-none p-4 leading-relaxed"
-              defaultValue="Bem-vindo ao libras.ai! Aqui você pode usar a sua webcam ou enviar uma imagem para que o nosso sistema faça a transcrição de Libras para texto. Aproveite para conferir também mais conteúdos voltados ao aprendizado de libras nos seguintes sites:"
+              className="resize-none p-4 leading-relaxed "
+              defaultValue="Bem-vindo ao libras.ai! Aqui você pode usar a sua webcam ou enviar uma imagem para que o nosso sistema faça a transcrição de Libras para texto. Essa plataforma foi desenvolvida com o propósito de proporcionar acessibilidade e impulsionar o aprendizado da Linguagem Brasileira de Sinais.
+              Ao utilizar a sua webcam, o libras.ai utiliza algoritmos de reconhecimento de gestos para interpretar Libras em tempo real. É possível usar alguns modelos atualmente, mas recomendamos o KNN (Keras Neural Network) para melhores resultados. Além disso, para aqueles que preferem enviar uma imagem, nossa plataforma é também capaz de analisar o sinal representado na imagem estática. Para isso, basta arrastar e soltar a imagem na área indicada abaixo. Confira também o widget de Libras, que pode ser utilizado para traduzir palavras e frases para Libras usando a API do VLibras."
               readOnly
             />
 
@@ -133,10 +148,30 @@ export function App() {
 
             <div className="flex items-center justify-between gap-2">
               <div className="flex-1 flex h-full justify-center items-center">
-                <Upload className="border flex flex-1 rounded-md aspect-video cursor-pointer border-dashed text-md gap-2 items-center justify-center text-muted-foreground">
-                  <UploadIcon className="inline mr-2" />
-                  <p className="text-xl inline">Faça o upload de imagens</p>
-                </Upload>
+                <Upload.Dragger
+                  multiple={false}
+                  listType="picture"
+                  showUploadList={{ showRemoveIcon: true }}
+                  accept=".png,.jpg,.jpeg"
+                  beforeUpload={(file) => {
+                    setCurrentText("");
+                    setIsShowingWebcam(false);
+                    // Convert file to base64
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => {
+                      setCurrentSnapshot(reader.result as string);
+                    };
+                    return true;
+                  }}
+                  className="flex flex-1 rounded-md aspect-video cursor-pointer border-dashed text-md gap-2 items-center justify-center text-muted-foreground"
+                >
+                  <UploadIcon className="inline mr-2 mb-1" />
+                  <span>
+                    <p className="text-xl inline">Faça o upload de imagens</p>
+                    <p className="text-sm">Formatos aceitos: PNG, JPG e JPEG</p>
+                  </span>
+                </Upload.Dragger>
               </div>
               <div className="flex-1 flex h-full justify-center items-center">
                 <video
@@ -155,15 +190,87 @@ export function App() {
 
         {/* Side bar */}
         <aside className="w-80 space-y-6">
-          {/* TODO: transformar esse formulário de vídeo num contêiner que mostre a webcam em tempo real (aspect-video é importante) */}
-          <form className="space-y-6 flex flex-col items-center">
-            {/* TODO: Centralizar isso */}
-            <div className="w-1/2 flex justify-between items-center">
+          <form className="space-y-6">
+            <div className="space-y-2">
               <Label htmlFor="transcription_prompt">
                 Letras interpretadas:
               </Label>
-              <span className="text-2xl text-green-500">{currentText}</span>
+              <Textarea
+                id="transcription_prompt"
+                placeholder="As letras interpretadas aparecerão aqui"
+                className="resize-none h-5 leading-relaxed"
+                value={currentText}
+                readOnly
+              />
             </div>
+
+            <Button
+              type="button"
+              className="w-full bg-zinc-200 text-zinc-900 hover:bg-zinc-300 hover:text-zinc-900"
+              onClick={() => {
+                setCurrentText("");
+              }}
+            >
+              Limpar texto
+              <Sparkles className="w-4 h-4 ml-2" />
+            </Button>
+          </form>
+
+          <Separator />
+
+          <form className="space-y-6" action="GET">
+            <div className="space-y-2">
+              <Label>Modelo</Label>
+              <Select
+                defaultValue={selectedModel}
+                onValueChange={setSelectedModel}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="knn">
+                    KNN {"(Keras Neural Network, recomendado)"}
+                  </SelectItem>
+                  <SelectItem value="logreg">Regressão Logística</SelectItem>
+                  <SelectItem value="svm">
+                    SVM {"(Support Vector Machine)"}
+                  </SelectItem>
+                  <SelectItem value="rf">
+                    RF {"(Random Forest, não recomendado)"}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <span className="block text-xs text-muted-foreground italic">
+                Você poderá alterar o modelo de reconhecimento em breve
+              </span>
+            </div>
+
+            <Separator />
+
+            <div className="space-y-4">
+              <div className="flex justify-between mb-2">
+                <Label>Velocidade de reconhecimento</Label>
+                <span className="block text-xs text-muted-foreground italic">
+                  {timeUntilNextSnapshot}s
+                </span>
+              </div>
+              <Slider
+                min={0.1}
+                max={5}
+                step={0.1}
+                value={[timeUntilNextSnapshot]}
+                onValueChange={(value) => setTimeUntilNextSnapshot(value[0])}
+              />
+
+              <span className="block text-xs text-muted-foreground italic">
+                Velocidade {"(em segundos)"} com que as capturas são enviadas
+                para reconhecimento
+              </span>
+            </div>
+
+            <Separator />
 
             <Button
               type="submit"

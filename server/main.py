@@ -5,10 +5,10 @@ import os
 import cv2
 import numpy as np
 import joblib
-import argparse
 
 from cvzone.HandTrackingModule import HandDetector
 from sklearn.neighbors import KNeighborsClassifier
+
 
 app = Flask(__name__)
 
@@ -26,12 +26,12 @@ def before_request():
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
     data = request.get_json()
-    data = data['data']
-    # print("Received data: ", data)
+    image = data['image']
+    model = data['model']
 
-    base64_image_data = data.split(",")[1]
+    base64_image_data = image.split(",")[1]
 
-    # Convert base64 image to actual image
+    # Convertendo a imagem de base64 para bytes
     image = base64.b64decode(base64_image_data)
     final_label = ''
 
@@ -41,7 +41,7 @@ def receive_data():
         with open(filename, "wb") as fh:
             fh.write(image)
 
-        final_label = main()
+        final_label = main(model)
     except Exception as e:
         print(f"Error ocurred: {e}")
 
@@ -61,17 +61,10 @@ def _corsify_actual_response(response):
     return response
 
 
-def main():
-    # parse arguments
-    parser = argparse.ArgumentParser(description='Specify model to use')
-    parser.add_argument('--model', type=str, default='knn',
-                        help='Specify the model (default: knn)')
-
-    # get arguments
-    args = parser.parse_args()
-
+def main(model_name='knn'):
+    print("Model: ", model_name)
     # load model
-    path = './server/models/' + args.model + '_model'
+    path = './server/models/' + model_name + '_model'
     model = joblib.load(path + '.joblib')
 
     # define labels
@@ -94,7 +87,7 @@ def main():
     frame = cv2.imread(image_path)
 
     # detect hands
-    hands, _ = detector.findHands(frame.copy(), flipType=True)
+    hands, _ = detector.findHands(frame, flipType=True)
 
     # if the hand was detected
     points = []
