@@ -8,6 +8,7 @@ import joblib
 
 from cvzone.HandTrackingModule import HandDetector
 from sklearn.neighbors import KNeighborsClassifier
+from keras.models import load_model
 
 
 app = Flask(__name__)
@@ -63,7 +64,10 @@ def main(model_name='knn'):
     print("Model: ", model_name)
     # load model
     path = './models/' + model_name + '_model'
-    model = joblib.load(path + '.joblib')
+    if model_name == 'nn':
+        model = load_model(path + '.h5')
+    else:
+        model = joblib.load(path + '.joblib')
 
     # define labels
     labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M',
