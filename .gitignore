@@ -12,6 +12,7 @@ api/images
 __pycache__
 .vercel
 
+.vite
 .env
 dist
 dist-ssr

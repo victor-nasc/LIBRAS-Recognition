@@ -16,7 +16,7 @@ def main(size, save):
 
     # define labels
     labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'N',
-              'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', ' ']
+              'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y']
 
     # initialize hand detector
     detector = HandDetector(maxHands=1, detectionCon=0.5)
@@ -99,11 +99,11 @@ def main(size, save):
                     cv2.imwrite(os.path.join(DATA_DIR, str(c), name), frame)
                 i += 1
 
-            # ask for flip hands
+            # ask for switch hands
             if i == size//2:
                 while True:
                     _, frame = cap.read()
-                    cv2.putText(frame, 'Change Hands! (keep the same sign)', (25,50), 
+                    cv2.putText(frame, 'Switch Hands! (keep the same sign)', (25,50), 
                                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                     cv2.putText(frame, 'Press "N" to continue', (25,90), 
                                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
