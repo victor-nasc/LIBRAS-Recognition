@@ -162,7 +162,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     # load model
-    path = './models/' + args.model + '_model'
+    path = '../models/' + args.model + '_model'
     if args.model == 'nn':
         model = load_model(path + '.h5')
     else:
