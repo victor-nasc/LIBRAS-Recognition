@@ -10,6 +10,7 @@ lerna-debug.log*
 
 api/images
 __pycache__
+.vercel
 
 .env
 dist

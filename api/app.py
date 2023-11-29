@@ -66,7 +66,7 @@ def main(model_name='knn'):
     model = joblib.load(path + '.joblib')
 
     # define labels
-    labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M',
+    labels = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M',
               'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y']
 
     # define hand detector
