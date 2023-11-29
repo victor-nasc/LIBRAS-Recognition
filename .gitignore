@@ -8,8 +8,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-server/images
+api/images
+__pycache__
 
+.env
 dist
 dist-ssr
 *.local

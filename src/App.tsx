@@ -56,7 +56,7 @@ export function App() {
       model: string
     ): Promise<void> => {
       console.log("Sending data to Flask", model);
-      await fetch("http://localhost:5000/receive_data", {
+      await fetch("http://localhost:8000/predict", {
         method: "POST",
         body: JSON.stringify({ image: img, model: model }),
         headers: {
