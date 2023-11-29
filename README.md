@@ -58,23 +58,30 @@ Developing a transcriptor for the alphabet with missing letters may seem like a 
 
 - Lift your hand off the screen to input a spacebar.
 
-```bash
-# clone the repository
-git clone https://github.com/victor-nasc/LIBRAS-Recognition.git
+First, in one terminal (using Python v3.10.12 or newer), deploy the API:
 
-# install dependencies
+```bash
+# install dependencies (reset the terminal if needed)
 pip3 install -r requirements.txt
 
-# Run the program
-python3 main.py
+# go into the api folder
+cd api
 
-# Available models:
-# python3 main.py --model=MODEL_NAME (knn is the defalt)
-#     - knn
-#     - rf     (random forest)
-#     - svm
-#     - logreg (logistic regression)
-#     - nn     (neural network)
+# run the api
+gunicorn --config gunicorn_config.py app:app
+```
+
+Now, in another terminal, with NodeJS (v20.10.0 recommended) and npm (v10.2.3 recommended) installed, start the Frontend dev build:
+
+```bash
+# install yarn
+npm install --global yarn
+
+# install dependencies
+yarn
+
+# run the frontend, it should start in http://localhost:5173
+yarn dev
 ```
 
 ## Authors

@@ -66,19 +66,16 @@ def main(model_name='knn'):
     model = joblib.load(path + '.joblib')
 
     # define labels
-    labels = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M',
+    labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M',
               'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y']
 
     # define hand detector
     detector = HandDetector(maxHands=1, detectionCon=0.5)
 
     # initialize variables
-    label = ''
-    text = ''
+    label = ' '
     time = 0
-    max_time = 10  # time to wait before adding a new letter to the text
     y = x = w = 0
-    font = cv2.FONT_HERSHEY_SIMPLEX
 
     image_path = "./images/sample.png"
 
@@ -89,7 +86,8 @@ def main(model_name='knn'):
 
     # if the hand was detected
     points = []
-    for hand in hands:
+    if hands:
+        hand = hands[0]
         # get landmarks
         land_marks = hand["lmList"]
 
