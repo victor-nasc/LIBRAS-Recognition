@@ -10,7 +10,7 @@ from keras.models import load_model
 
 def main(model):
     # define labels
-    labels = [' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 
+    labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 
               'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y']
 
     # open webcam 
