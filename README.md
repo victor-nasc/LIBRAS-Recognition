@@ -2,6 +2,9 @@
 
 ## :bulb: Inspiration
 
+![Screen01](public/screen01.png)
+[Presentation page](https://victor-nasc.github.io/LIBRAS-Recognition/)
+
 LIBRAS stands for "_Língua Brasileira de Sinais_", translating to **Brazilian Sign Language** in English. It serves as the primary mode of communication for millions of deaf individuals in Brazil.
 
 The development of a Libras Alphabet Transcriber in real-time using Machine Learning is crucial for promoting inclusivity and accessibility for the deaf community in Brazil.

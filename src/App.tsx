@@ -231,14 +231,17 @@ export function App() {
 
                 <SelectContent>
                   <SelectItem value="knn">
-                    KNN {"(Keras Neural Network, recomendado)"}
+                    KNN {"(K-Nearest Neighbors)"}
                   </SelectItem>
                   <SelectItem value="logreg">Regressão Logística</SelectItem>
                   <SelectItem value="svm">
                     SVM {"(Support Vector Machine)"}
                   </SelectItem>
                   <SelectItem value="rf">
-                    RF {"(Random Forest, não recomendado)"}
+                    RF {"(Random Forest)"}
+                  </SelectItem>
+                  <SelectItem value="nn">
+                    NN {"(Neural Network, não recomendado para computadores fracos)"}
                   </SelectItem>
                 </SelectContent>
               </Select>
