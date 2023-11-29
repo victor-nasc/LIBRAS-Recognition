@@ -32,7 +32,7 @@ def main(model):
     # initialize variables
     label = '' 
     text = ''   
-    time = 0
+    time = time_spacebar = 0
     max_time = 10 # time to wait before adding a new letter to the text
     y = x = w = 0
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -59,8 +59,10 @@ def main(model):
         
         # if the hand was detected
         points = []
-        for hand in hands: 
+        time_spacebar += 1
+        if hands: 
             # get landmarks
+            hand = hands[0]
             land_marks = hand["lmList"]
                         
             # get bouding box 
@@ -90,14 +92,24 @@ def main(model):
                 label = predictions[0]
             
             # update time
+            time_spacebar = 0
             if old_label == label:
                 time += 1
-                
+        else:
+            x = y = w = 0
 
+
+        # add spacebar 
+        if time_spacebar > max_time and label != ' ':
+            time = max_time+1
+            time_spacebar = 0
+            label = ' '
+            
         # update text
         if time > max_time:
-            text += label
+            text += label 
             time = 0
+            time_spacebar = 0
 
             # white blink
             frame = 255 * np.ones((height, width, 3), dtype=np.uint8)
