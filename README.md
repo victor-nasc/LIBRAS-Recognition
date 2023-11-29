@@ -20,9 +20,6 @@ This project was made for AI4GOOD [Brazil Conference](https://www.brazilconferen
 
 ![Landmark](public/landmark.gif)
 
-![Screen01](public/screen01.png)
-[Presentation page](https://victor-nasc.github.io/LIBRAS-Recognition/)
-
 The Libras Alphabet Transcriber is a Python program that employs Computer Vision and Machine Learning techniques to recognize and transcribe gestures of the Brazilian Sign Language (LIBRAS)
 alphabet in real-time using your webcam. The program utilizes a Hand Tracking module to detect hand landmarks, and, based on their coordinates, employs a machine learning algorithm
 to classify and transcribe the corresponding sign language alphabet.
