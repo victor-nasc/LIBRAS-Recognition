@@ -2,9 +2,6 @@
 
 ## :bulb: Inspiration
 
-![Screen01](public/screen01.png)
-[Presentation page](https://victor-nasc.github.io/LIBRAS-Recognition/)
-
 LIBRAS stands for "_Língua Brasileira de Sinais_", translating to **Brazilian Sign Language** in English. It serves as the primary mode of communication for millions of deaf individuals in Brazil.
 
 The development of a Libras Alphabet Transcriber in real-time using Machine Learning is crucial for promoting inclusivity and accessibility for the deaf community in Brazil.
@@ -18,7 +15,10 @@ This project was made for AI4GOOD [Brazil Conference](https://www.brazilconferen
 
 ## :computer: What it does
 
-![Example](https://gizmodo.uol.com.br/wp-content/blogs.dir/8/files/2021/02/nyan-cat-1.gif)
+![Landmark](public/landmark.gif)
+
+![Screen01](public/screen01.png)
+[Presentation page](https://victor-nasc.github.io/LIBRAS-Recognition/)
 
 The Libras Alphabet Transcriber is a Python program that employs Computer Vision and Machine Learning techniques to recognize and transcribe gestures of the Brazilian Sign Language (LIBRAS)
 alphabet in real-time using your webcam. The program utilizes a Hand Tracking module to detect hand landmarks, and, based on their coordinates, employs a machine learning algorithm
