@@ -16,8 +16,12 @@ The data format should be as follows: (N $\times$ 64)
 | A | B | C | D | E | F | G | I | L | M | N | O | P | Q | R | S | T | U | V | W | Y |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 
+[Download](https://drive.google.com/file/d/1Y7O-EdNG9UK336z1JrN6Ojg-Jhri58Ov/view?usp=sharing) 
 
 ## :camera: Usage
+
+Collect new data
+
 ```bash
 
 # Run the program
