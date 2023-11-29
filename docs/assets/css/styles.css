@@ -1,0 +1,29 @@
+/* Playfair Display */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap");
+
+.big-quote {
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  font-family: "Playfair Display", serif;
+}
+
+.quoted-text {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  font-family: "Playfair Display", serif;
+}
+
+.mention {
+  font-size: 1rem;
+  font-weight: 100;
+  line-height: 0.5;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  font-family: serif;
+}

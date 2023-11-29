@@ -5,3 +5,8 @@ pandas==1.5.2
 cvzone==1.6.1
 tensorflow==2.15.0
 scikit-learn==1.0.2
+<<<<<<< HEAD
+=======
+gunicorn==21.2.0
+mediapipe==0.10.8
+>>>>>>> 40d3d12a3ad0a0f393a28f17414eb45c3a2c96a6
