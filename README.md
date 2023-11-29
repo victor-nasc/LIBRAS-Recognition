@@ -1,18 +1,10 @@
 # Libras Alphabet Transcriber
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 40d3d12a3ad0a0f393a28f17414eb45c3a2c96a6
 ## :bulb: Inspiration
 
 LIBRAS stands for "_Língua Brasileira de Sinais_", translating to **Brazilian Sign Language** in English. It serves as the primary mode of communication for millions of deaf individuals in Brazil.
 
-<<<<<<< HEAD
-The development of a Libras Alphabet Transcriber in real-time using Machine Learning is crucial for promoting inclusivity and accessibility for the deaf community in Brazil. 
-=======
 The development of a Libras Alphabet Transcriber in real-time using Machine Learning is crucial for promoting inclusivity and accessibility for the deaf community in Brazil.
->>>>>>> 40d3d12a3ad0a0f393a28f17414eb45c3a2c96a6
 While numerous projects have focused on American Sign Language (ASL), there is a noticeable gap in the availability of tools specifically tailored to Libras.
 
 The application provides educational advantages by creating inclusive learning environments for students who are deaf or hard of hearing, as well as for individuals interested on learning Libras.
@@ -25,44 +17,18 @@ This project was made for AI4GOOD [Brazil Conference](https://www.brazilconferen
 
 ![Example](https://gizmodo.uol.com.br/wp-content/blogs.dir/8/files/2021/02/nyan-cat-1.gif)
 
-<<<<<<< HEAD
-
-The Libras Alphabet Transcriber is a Python program that employs Computer Vision and Machine Learning techniques to recognize and transcribe gestures of the Brazilian Sign Language (LIBRAS)
-alphabet in real-time using your webcam. The program utilizes a Hand Tracking module to detect hand landmarks, and, based on their coordinates, employs a machine learning algorithm 
-to classify and transcribe the corresponding sign language alphabet.
-
-### :gear: Available Machine Learning Models [Keras](https://keras.io/) / [scikit-learn](https://scikit-learn.org/stable/)
-=======
 The Libras Alphabet Transcriber is a Python program that employs Computer Vision and Machine Learning techniques to recognize and transcribe gestures of the Brazilian Sign Language (LIBRAS)
 alphabet in real-time using your webcam. The program utilizes a Hand Tracking module to detect hand landmarks, and, based on their coordinates, employs a machine learning algorithm
 to classify and transcribe the corresponding sign language alphabet.
 
 ### :gear: Available Machine Learning Models [Keras](https://keras.io/) / [scikit-learn](https://scikit-learn.org/stable/)
 
->>>>>>> 40d3d12a3ad0a0f393a28f17414eb45c3a2c96a6
 - KNN [default model]
 - Random Forest
 - SVM
 - Logistic Regression
 - Neural Network
 
-<<<<<<< HEAD
-
-## :hammer: How we built it
-- ```main.py```: Real-time transcriber:
-   1. Opens your webcam
-   2. Obtains your hand positions using the [CVZone](https://github.com/cvzone/cvzone) Hand Tracking Module
-   3. Normalizes hand landmark coordinates 
-   4. Makes predictions using the selected model
-   5. Display results in an [OpenCV](https://opencv.org/) window
-- ```train.ipynb```
-  Training and results of different machine learning models.
-- ```./dataset```
-  The folder where the data is saved and the script to collect it
-- ```./models```
-  The folder where all models are saved
-
-=======
 ## :hammer: How we built it
 
 - `main.py`: Real-time transcriber:
@@ -77,7 +43,6 @@ to classify and transcribe the corresponding sign language alphabet.
   The folder where the data is saved and the script to collect it
 - `./models`
   The folder where all models are saved
->>>>>>> 40d3d12a3ad0a0f393a28f17414eb45c3a2c96a6
 
 ## :x: Limitations
 
@@ -87,40 +52,12 @@ The main limitation arose when dealing with signs involving movements, leading t
 
 Developing a transcriptor for the alphabet with missing letters may seem like a silly idea, but it underscores the importance of recognizing the difficulties of Libras. Encouraging more in-depth studies in this area is crucial to continually improve accessibility technologies and promote more effective inclusion of sign languages in the digital era.
 
-<<<<<<< HEAD
-
-## :camera: Usage
-=======
 ## :camera: Usage
 
->>>>>>> 40d3d12a3ad0a0f393a28f17414eb45c3a2c96a6
 - Hold the same gesture for 10 frames to register it.
 
 - Lift your hand off the screen to input a spacebar.
 
-<<<<<<< HEAD
-  
-```bash
-# clone the repository
-git clone https://github.com/victor-nasc/LIBRAS-Recognition.git
-
-# install dependencies
-pip install -r requirements.txt
-
-# Run the program
-python3 main.py 
-
-# Available models:
-# python3 main.py --model=MODEL_NAME (knn is the defalt)
-#     - knn 
-#     - rf     (random forest)
-#     - svm
-#     - logreg (logistic regression)
-#     - nn     (neural network)
-```
-
-## Authors
-=======
 First, in one terminal (using Python v3.10.12 or newer), deploy the API:
 
 ```bash
@@ -149,13 +86,8 @@ yarn dev
 
 ## Authors
 
->>>>>>> 40d3d12a3ad0a0f393a28f17414eb45c3a2c96a6
 Victor Nascimento Ribeiro - [LinkedIn](https://www.linkedin.com/in/victor-nasc/)
 
 Gustavo Vaz Pinto - [LinkedIn](https://www.linkedin.com/in/gust-vaz/)
 
 Eduardo Cruz Guedes - [LinkedIn](https://www.linkedin.com/in/educg550/)
-<<<<<<< HEAD
-
-=======
->>>>>>> 40d3d12a3ad0a0f393a28f17414eb45c3a2c96a6
