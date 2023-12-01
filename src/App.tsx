@@ -140,7 +140,7 @@ export function App() {
             <Textarea
               className="resize-none p-4 leading-relaxed "
               defaultValue="Bem-vindo ao libras.ai! Aqui você pode usar a sua webcam ou enviar uma imagem para que o nosso sistema faça a transcrição de Libras para texto. Essa plataforma foi desenvolvida com o propósito de proporcionar acessibilidade e impulsionar o aprendizado da Linguagem Brasileira de Sinais.
-              Ao utilizar a sua webcam, o libras.ai utiliza algoritmos de reconhecimento de gestos para interpretar Libras em tempo real. É possível usar alguns modelos atualmente, mas recomendamos o KNN (Keras Neural Network) para melhores resultados. Além disso, para aqueles que preferem enviar uma imagem, nossa plataforma é também capaz de analisar o sinal representado na imagem estática. Para isso, basta arrastar e soltar a imagem na área indicada abaixo. Confira também o widget de Libras, que pode ser utilizado para traduzir palavras e frases para Libras usando a API do VLibras."
+              Ao utilizar a sua webcam, o libras.ai utiliza algoritmos de reconhecimento de gestos para interpretar Libras em tempo real. É possível usar alguns modelos atualmente, mas recomendamos o KNN (K-Nearest Neighbors) para melhores resultados. Além disso, para aqueles que preferem enviar uma imagem, nossa plataforma é também capaz de analisar o sinal representado na imagem estática. Para isso, basta arrastar e soltar a imagem na área indicada abaixo. Confira também o widget de Libras, que pode ser utilizado para traduzir palavras e frases para Libras usando a API do VLibras."
               readOnly
             />
 
